@@ -1,47 +1,56 @@
 import * as vscode from 'vscode';
-import { StorageService } from './services/storageService';
-import { ApiService } from './services/apiService';
-import { QuotaKeyManagerViewProvider } from './webview/provider';
+import { AccountManager } from './services/accountManager';
+import { AccountSwitcher } from './services/accountSwitcher';
+import { AccountPanelProvider } from './webview/accountPanelProvider';
 
-let storageService: StorageService;
-let apiService: ApiService;
+let accountManager: AccountManager;
+let accountSwitcher: AccountSwitcher;
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log('XG-Windsurf is now active!');
+    console.log('Windsurf 无感换号 is now active!');
 
     // Initialize services
-    storageService = new StorageService(context);
-    apiService = new ApiService();
+    accountManager = new AccountManager(context);
+    accountSwitcher = new AccountSwitcher();
+    accountSwitcher.setContext(context);
 
     // Register webview provider
-    const provider = new QuotaKeyManagerViewProvider(context, storageService, apiService);
+    const panelProvider = new AccountPanelProvider(
+        context.extensionUri,
+        accountManager,
+        accountSwitcher
+    );
     
-    vscode.window.registerWebviewViewProvider(
-        'xg-windsurf.view',
-        provider,
-        {
-            webviewOptions: {
-                retainContextWhenHidden: true
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider(
+            AccountPanelProvider.viewType,
+            panelProvider,
+            {
+                webviewOptions: {
+                    retainContextWhenHidden: true
+                }
             }
-        }
+        )
     );
 
     // Register commands
-    const disposables = [
-        vscode.commands.registerCommand('xg-windsurf.refresh', () => {
-            provider.refresh();
+    context.subscriptions.push(
+        vscode.commands.registerCommand('windsurf-wugan-huanhao.refresh', () => {
+            panelProvider.refresh();
         }),
         
-        vscode.commands.registerCommand('xg-windsurf.clearData', async () => {
-            await storageService.clearAllData();
-            provider.refresh();
-            vscode.window.showInformationMessage('所有数据清除成功！');
+        vscode.commands.registerCommand('windsurf-wugan-huanhao.switchNext', async () => {
+            const { account, index } = await accountManager.getNextAccount();
+            if (account) {
+                await accountManager.setCurrentAccountIndex(index);
+                await accountSwitcher.switchAccount(account);
+            } else {
+                vscode.window.showWarningMessage('没有可切换的账号，请先添加账号');
+            }
         })
-    ];
-
-    context.subscriptions.push(...disposables);
+    );
 }
 
 export function deactivate() {
-    console.log('XG-Windsurf is now deactivated!');
+    console.log('Windsurf 无感换号 is now deactivated!');
 }
