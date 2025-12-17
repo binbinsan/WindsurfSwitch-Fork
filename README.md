@@ -2,19 +2,35 @@
 
 <img src="resources/windsurf-icon.png" alt="Windsurf" width="80">
 
-# Windsurf 无感换号
+# Windsurf 无感换号 (Fork)
 
 **Windsurf 账号无感切换工具**
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
-[![QQ群](https://img.shields.io/badge/QQ%E7%BE%A4-469028100-blue.svg)](https://qm.qq.com/q/469028100)
 
 </div>
 
 ---
 
-> **相关工具推荐**: [Windsurf-Tool](https://github.com/crispvibe/Windsurf-Tool) - 批量注册 Windsurf 账号 & 切号账号自动绑卡工具
+## 🔱 Fork 说明
+
+本项目 **Fork** 自 [crispvibe/WindsurfSwitch](https://github.com/crispvibe/WindsurfSwitch)。
+
+### 修改内容
+
+| 修改项 | 说明 |
+|--------|------|
+| **Windsurf 1.106.0 适配** | 更新 `handleAuthToken` 函数签名以兼容 Windsurf 1.106.0 版本 |
+| **Linux 路径修复** | 修复 Linux 系统下的 Windsurf 扩展路径检测 |
+
+### 原项目信息
+
+- **原作者**: [crispvibe](https://github.com/crispvibe)
+- **原仓库**: [https://github.com/crispvibe/WindsurfSwitch](https://github.com/crispvibe/WindsurfSwitch)
+- **相关工具**: [Windsurf-Tool](https://github.com/crispvibe/Windsurf-Tool) - 批量注册 Windsurf 账号 & 切号账号自动绑卡工具
+
+感谢原作者的开源贡献！
 
 ---
 
